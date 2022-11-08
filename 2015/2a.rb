@@ -1019,23 +1019,27 @@ input.each_line do |line|
     w = box[1]
     h = box[2]
 
-    puts l
-    puts w
-    puts h
+    puts "l*w: " + (l*w).to_s
+    puts "l*h: " + (l*h).to_s
+    puts "w*h: " + (w*h).to_s
+    puts "total before 2x: " + (l*w + l*h + w*h).to_s
 
+    puts "BOX sqft: " + (2*l*w + 2*l*h + 2*w*h).to_s
     total += (2*l*w + 2*l*h + 2*w*h)
 
     small = l*w
     puts 'lowest small: ' + small.to_s
-    if l*h > small
+    if l*h < small
         small = l*h
-        puts 'increasing small: ' + small.to_s
+        puts 'decreasing small: ' + small.to_s
     end
 
-    if w*h > small
+    if w*h < small
         small = w*h
-        puts 'largest small: ' + small.to_s
+        puts 'smallest small: ' + small.to_s
     end
+
+    puts "BOX sqft with extra: " +  (small+2*l*w + 2*l*h + 2*w*h).to_s
 
     puts "total before small: " + total.to_s
     total += small
