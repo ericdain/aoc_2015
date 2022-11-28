@@ -304,69 +304,70 @@ turn off 102,229 through 674,529'
 # turn off 999,999 through 999,999
 # turn on 0,999 through 999,999'
 
-
 x = Array.new(1000) { Array.new(1000, 0) }
 
-#x = Array.new(10) { Array.new(10, 0) }
+# x = Array.new(10) { Array.new(10, 0) }
 
 # input = 'turn on 0,0 through 999,999
 # toggle 0,0 through 999,0
 # turn off 499,499 through 500,500
 # turn off 499,499 through 500,500'
 
-
 line_number = 0
 input.each_line do |line|
-    line_number += 1
-    #BOOYAH!
-    /^(?<type>\D+)(?<x1>\d{1,3}),(?<y1>\d{1,3}) through (?<x2>\d{1,3}),(?<y2>\d{1,3})/ =~ line
-    
-    # puts "type: #{type}"
-    # puts "\"#{type}\""
-    #puts "#{type} #{x1},#{y1} through #{x2},#{y2}"
-    
-    x1,y1,x2,y2 = x1.to_i,y1.to_i,x2.to_i,y2.to_i
+  line_number += 1
+  # BOOYAH!
+  /^(?<type>\D+)(?<x1>\d{1,3}),(?<y1>\d{1,3}) through (?<x2>\d{1,3}),(?<y2>\d{1,3})/ =~ line
 
-    x[x1..x2].each_with_index do |y, x_index|
-        count = 0
-        if type == 'turn off ' then
-          y[y1..y2].each_with_index do |light, y_index|
-            y[y1+y_index] -= 1 unless y[y1+y_index] == 0
-          end
-        end
+  # puts "type: #{type}"
+  # puts "\"#{type}\""
+  # puts "#{type} #{x1},#{y1} through #{x2},#{y2}"
 
-        if type == 'turn on ' then
-          y[y1..y2].each_with_index do |light, y_index|
-            y[y1+y_index] += 1
-          end        
-        end
-        
-        if type == 'toggle ' then
-            y[y1..y2].each_with_index do |light, y_index|
-              y[y1+y_index] += 2
-            end
-        end
-       
-        # x.each do |y|
-        #     y.each do |light|
-        #         if light == 1 then
-        #             count += 1 
-        #         end
-                
-        #     end
-        # end
-        # puts "line #{line_number} row #{x_index}: count now #{count} after #{type}#{x1},#{y1} through #{x2},#{y2}"
+  x1 = x1.to_i
+  y1 = y1.to_i
+  x2 = x2.to_i
+  y2 = y2.to_i
+
+  x[x1..x2].each_with_index do |y, _x_index|
+    count = 0
+    if type == 'turn off '
+      y[y1..y2].each_with_index do |_light, y_index|
+        y[y1 + y_index] -= 1 unless y[y1 + y_index] == 0
+      end
     end
+
+    if type == 'turn on '
+      y[y1..y2].each_with_index do |_light, y_index|
+        y[y1 + y_index] += 1
+      end
+    end
+
+    next unless type == 'toggle '
+
+    y[y1..y2].each_with_index do |_light, y_index|
+      y[y1 + y_index] += 2
+    end
+
+    # x.each do |y|
+    #     y.each do |light|
+    #         if light == 1 then
+    #             count += 1
+    #         end
+
+    #     end
+    # end
+    # puts "line #{line_number} row #{x_index}: count now #{count} after #{type}#{x1},#{y1} through #{x2},#{y2}"
+  end
 end
 
 count = 0
 x.each do |y|
-    y.each do |light|
-        count += light
-    end
+  y.each do |light|
+    count += light
+  end
 end
 
 puts "final: #{count}"
 
-#too high: 398000
-#too low: 321938
+# too high: 398000
+# too low: 321938
